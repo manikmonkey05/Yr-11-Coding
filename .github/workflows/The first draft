@@ -1,0 +1,33 @@
+class ball{
+   int x, y, radius, xSpeed, ySpeed;
+}
+ball b;
+void setup() {
+  size(500,500);
+  b=new ball();
+  b.x=100; b.y=100; b.radius=50; b.ySpeed=3;b.xSpeed=2;
+}
+
+void draw() {
+  moveBall(b);
+  showBall(b);
+}
+void moveBall(ball ball){
+  if(ball.x+ball.radius>=width || ball.x-ball.radius<0) ball.xSpeed=-ball.xSpeed;
+  if(ball.y+ball.radius>=height || ball.y-ball.radius<0) ball.ySpeed=-ball.ySpeed;
+
+  ball.x=ball.x+ball.xSpeed;
+  ball.y=ball.y+ball.ySpeed;
+}
+void showBall(ball ball) {
+  fill(255);
+  if (mouseOnBall(ball)==true) fill(255,0,0);
+ circle(ball.x, ball.y, ball.radius*2);
+}
+boolean mouseOnBall(ball ball) {
+  if (dist(ball.x, ball.y, mouseX, mouseY)<=ball.radius) {
+    return true;
+  } else {
+    return false;
+  }
+}
