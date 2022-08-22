@@ -1,0 +1,57 @@
+// circles initial position 
+float circle_x = 20;
+float circle_y = 20;
+//how much to move the circle in each frame
+float move_x = 1;
+float move_y = 1;
+
+
+ball[] balls= new ball[100];
+//amount of balls floating around
+
+class ball {
+  float x, y, xSpeed, ySpeed, radius;
+}
+
+
+void setup() {
+  size(400, 400);
+  for (int i=0; i<balls.length; i++) {
+    balls[i]=new ball();
+    balls[i].x=random(5);
+    balls[i].y=random(5);
+    balls[i].xSpeed=random(2);
+    balls[i].ySpeed=random(2);
+    balls[i].radius=random(2);
+  }
+}
+
+
+
+void draw() {
+  background(0);
+  ellipse(circle_x,circle_y, 40, 40);  
+  circle_x= circle_x + move_x;
+  circle_y= circle_y + move_y;
+    if (circle_x<0);
+    circle_x=circle_x*-1;
+  
+  
+  
+  //if (circle_x > width) {
+    //circle_x= width;
+    //move_x= -move_x;
+    //if (circle_y > height) {
+     // circle_y=0;
+      //if (circle_x < 0){
+        //circle_x= width;
+        //if (circle_y < 0){
+        //  circle_y = height;
+       // }
+     // }
+    //}
+  }
+
+
+  //void keyPressed() {
+//}
