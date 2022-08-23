@@ -1,0 +1,128 @@
+
+void setup() {
+  Dictionary=loadStrings("Dictionary.txt"); //Adds file called dictionary to string Dictionary.
+  size(800, 800);
+  background(100);
+  word=""; //word begins with nothing.
+  //creates bouncing balls
+  // starting position is random from 0 to width or 0 to height.
+  for (int i=0; i<bouncingballs.length; i++) {
+    bouncingballs[i]= new balls();
+    bouncingballs[i].x = random (0, 10); //random ball x pos 0-10
+    bouncingballs[i].y = random (0, 10); //random ball y pos 0-10
+    // random starting velocity
+    bouncingballs[i].xSpeed = random (-2, 1); //random xSpeed
+    bouncingballs[i].ySpeed = random (-2, 1); //random ySpeed
+    if (random(0, 10) < 4) {
+      bouncingballs[i].letter= char(int(random(97, 123))); //gives balls random lowercase letter.
+      
+
+void draw () {
+  background(0);
+  println(word);
+  text(word, 100, 500);
+  // Does all variables.
+  line (); //line between balls
+  move (); //moves ball
+  display ();  //creates ball
+  newball ();  //adds new balls
+  letter ();  //displays letter inside ball
+  word() ; //letters displayed on screen
+  text(Score, 100, 100); //displayes score 
+}
+
+
+//ball starts
+void display() {
+  for (int i=0; i<bouncingballs.length; i++) {
+    fill(255);
+    ellipse(bouncingballs[i].x, bouncingballs[i].y, 50, 50);
+  }
+}
+
+// ball moving
+void move () {
+  for (int i = 0; i<bouncingballs.length; i++) {
+    bouncingballs[i].x = bouncingballs[i].x + bouncingballs[i].xSpeed;
+    bouncingballs[i].y = bouncingballs[i].y + bouncingballs[i].ySpeed;
+    //bouncing off sides
+    if (bouncingballs[i].x < 0 || bouncingballs[i].x > width) {
+      bouncingballs[i].xSpeed = bouncingballs[i].xSpeed * -1;
+    }
+    //bouncing off top and bottom
+    if (bouncingballs[i].y < 0 || bouncingballs[i].y > height) {
+      bouncingballs[i].ySpeed = bouncingballs[i].ySpeed * -1;
+    }
+  }
+}
+//starttime =0 to begin.
+int Starttime= millis();
+
+void newball() {
+  int time=millis();
+  //if t-st is greater than 5 seconds, adds a new ball
+  if ((time-Starttime)>5000) {
+    bouncingballs=(balls[])append(bouncingballs, new balls());
+    bouncingballs[bouncingballs.length-1]=new balls();
+    bouncingballs[bouncingballs.length-1].xSpeed = random (-2, 1);
+    bouncingballs[bouncingballs.length-1].ySpeed = random (-2, 1); 
+    bouncingballs[bouncingballs.length-1].x=random(0, 10);
+    bouncingballs[bouncingballs.length-1].y=random(0, 10);
+    bouncingballs[bouncingballs.length-1].letter= char(int(random(97, 123)));
+    //bouncingballs[bouncingballs.length-1].r=(0);
+    //bouncingballs[bouncingballs.length-1].g=(0);
+    //bouncingballs[bouncingballs.length-1].b=(0);
+    Starttime=millis();
+  }
+}
+//adds lines between balls using nested loop (2 for loops)
+void line() {
+  stroke(255);
+  for (int i=0; i<bouncingballs.length; i++) {
+    for (int l=0; l<bouncingballs.length; l++) {
+      line(bouncingballs[i].x, bouncingballs[i].y, bouncingballs[l].x, bouncingballs[l].y);
+    }
+  }
+}
+
+//variable for letters displayed on screen. 
+void word() {
+  for (int i=0; i<bouncingballs.length; i++) {
+  }
+}
+void keyPressed() {
+  // int isSelected=0;
+  for (int i=0; i<bouncingballs.length; i++) {
+    if (key==bouncingballs[i].letter && bouncingballs[i].selected==false) {//checks if letter is in the balls, and it hasn't been selected before.
+      //isSelected=1;
+      bouncingballs[i].selected=true;
+      word=word+key;
+      //adds letter to string called 'word'.
+    }
+  }
+  if (keyCode==ENTER) {
+    Enter();//calls Enter.
+  }
+  if (keyCode==BACKSPACE) {
+    if (word.length() > 0) {
+      for (int i=0; i<bouncingballs.length; i++) {
+        if (bouncingballs[i].letter == word.charAt(word.length()-1)) {
+          bouncingballs[i].selected = false;
+          break; //loops through bouncing balls and sets the deleted letters selected back to false (so it can be retyped)
+        }
+      }
+      word=word.substring(0, word.length()-1);
+    }
+  }
+}
+
+//used for "if keycode==ENTER"
+void Enter() {
+  for (int i=0; i<Dictionary.length; i++) {
+    if (word.equals(Dictionary[i])&& word.length()>1) {
+      Score=Score+10;
+    } else {
+      text("Not a word",100,50);
+    }
+  }
+}
