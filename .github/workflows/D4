@@ -1,0 +1,95 @@
+
+class balls {
+  float x, y, xSpeed, ySpeed;
+  char letter;
+  boolean selected;
+}
+String word; //letters on screen
+String backspace;
+balls[]bouncingballs =new balls[5];
+
+void setup() {
+  Dictionary=loadStrings("Dictionary.txt"); //Adds file called dictionary to string Dictionary.
+  size(800, 800);
+  background(100);
+  word=""; //word begins with nothing.
+  //creates bouncing balls
+  // starting position is random from 0 to width or 0 to height.
+  for (int i=0; i<bouncingballs.length; i++) {
+    bouncingballs[i]= new balls();
+    bouncingballs[i].x = random (0, 10); //random ball x pos 0-10
+    bouncingballs[i].y = random (0, 10); //random ball y pos 0-10
+    // random starting velocity
+    bouncingballs[i].xSpeed = random (-2, 1); //random xSpeed
+    bouncingballs[i].ySpeed = random (-2, 1); //random ySpeed
+    if (random(0, 10) < 4) {
+      bouncingballs[i].letter= char(int(random(97, 123))); //gives balls random lowercase letter.
+      
+void draw () {
+  background(0);
+  println(word);
+  text(word, 100, 500);
+  // Does all variables.
+  line (); //line between balls
+  move (); //moves ball
+  display ();  //creates ball
+  newball ();  //adds new balls
+  letter ();  //displays letter inside ball
+  word() ; //letters displayed on screen
+  
+//ball starts
+void display() {
+  for (int i=0; i<bouncingballs.length; i++) {
+    fill(255);
+    ellipse(bouncingballs[i].x, bouncingballs[i].y, 50, 50);
+  }
+}
+
+// ball moving
+void move () {
+  for (int i = 0; i<bouncingballs.length; i++) {
+    bouncingballs[i].x = bouncingballs[i].x + bouncingballs[i].xSpeed;
+    bouncingballs[i].y = bouncingballs[i].y + bouncingballs[i].ySpeed;
+    //bouncing off sides
+    if (bouncingballs[i].x < 0 || bouncingballs[i].x > width) {
+      bouncingballs[i].xSpeed = bouncingballs[i].xSpeed * -1;
+    }
+    //bouncing off top and bottom
+    if (bouncingballs[i].y < 0 || bouncingballs[i].y > height) {
+      bouncingballs[i].ySpeed = bouncingballs[i].ySpeed * -1;
+    }
+  }
+}
+int Starttime= millis();
+
+void newball() {
+  int time=millis();
+  //if t-st is greater than 5 seconds, adds a new ball
+  if ((time-Starttime)>5000) {
+    bouncingballs=(balls[])append(bouncingballs, new balls());
+    bouncingballs[bouncingballs.length-1]=new balls();
+    bouncingballs[bouncingballs.length-1].xSpeed = random (-2, 1);
+    bouncingballs[bouncingballs.length-1].ySpeed = random (-2, 1); 
+    bouncingballs[bouncingballs.length-1].x=random(0, 10);
+    bouncingballs[bouncingballs.length-1].y=random(0, 10);
+    bouncingballs[bouncingballs.length-1].letter= char(int(random(97, 123)));
+    //bouncingballs[bouncingballs.length-1].r=(0);
+    //bouncingballs[bouncingballs.length-1].g=(0);
+    //bouncingballs[bouncingballs.length-1].b=(0);
+    Starttime=millis();
+  }
+}
+//adds lines between balls using nested loop (2 for loops)
+void line() {
+  stroke(255);
+  for (int i=0; i<bouncingballs.length; i++) {
+    for (int l=0; l<bouncingballs.length; l++) {
+      line(bouncingballs[i].x, bouncingballs[i].y, bouncingballs[l].x, bouncingballs[l].y);
+    }
+  }
+}void letter() {
+  for (int i=0; i<bouncingballs.length; i++) {
+    fill(255, 0, 255);
+    text(bouncingballs[i].letter, bouncingballs[i].x, bouncingballs[i].y);
+  }
+}
