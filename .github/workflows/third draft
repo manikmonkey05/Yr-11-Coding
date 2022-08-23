@@ -1,0 +1,50 @@
+
+class balls {
+  float x, y, xSpeed, ySpeed;
+  char letter;
+  boolean selected;
+}
+String word; //letters on screen
+balls[]bouncingballs =new balls[5];
+
+void setup() {
+  Dictionary=loadStrings("Dictionary.txt"); //Adds file called dictionary to string Dictionary.
+  size(800, 800);
+  background(100);
+  word=""; //word begins with nothing.
+  //creates bouncing balls
+  // starting position is random from 0 to width or 0 to height.
+  for (int i=0; i<bouncingballs.length; i++) {
+    bouncingballs[i]= new balls();
+    bouncingballs[i].x = random (0, 10); //random ball x pos 0-10
+    bouncingballs[i].y = random (0, 10); //random ball y pos 0-10
+    // random starting velocity
+    bouncingballs[i].xSpeed = random (-2, 1); //random xSpeed
+    bouncingballs[i].ySpeed = random (-2, 1); //random ySpeed
+      bouncingballs[i].letter= char(int(random(97, 123))); //gives balls random lowercase letter.
+      }
+      }
+      
+//ball starts
+void display() {
+  for (int i=0; i<bouncingballs.length; i++) {
+    fill(255);
+    ellipse(bouncingballs[i].x, bouncingballs[i].y, 50, 50);
+  }
+}
+
+// ball moving
+void move () {
+  for (int i = 0; i<bouncingballs.length; i++) {
+    bouncingballs[i].x = bouncingballs[i].x + bouncingballs[i].xSpeed;
+    bouncingballs[i].y = bouncingballs[i].y + bouncingballs[i].ySpeed;
+    //bouncing off sides
+    if (bouncingballs[i].x < 0 || bouncingballs[i].x > width) {
+      bouncingballs[i].xSpeed = bouncingballs[i].xSpeed * -1;
+    }
+    //bouncing off top and bottom
+    if (bouncingballs[i].y < 0 || bouncingballs[i].y > height) {
+      bouncingballs[i].ySpeed = bouncingballs[i].ySpeed * -1;
+    }
+  }
+}
